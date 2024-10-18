@@ -8,9 +8,9 @@ void main() {
     final wordSet = <String>{'a', 'ab', 'abc', 'abcd'};
     final expected = <String>{'abc', 'abcd'};
 
-    final result = filterLength(wordSet, 3);
+    filterByLength(wordSet, 3);
 
-    expect(result, expected);
+    expect(wordSet, expected);
   });
 
   test('should remove all words that contain unavailable letters', () {
@@ -18,9 +18,9 @@ void main() {
     final wordlist = <String>{'a', 'd', 'g', 'j', 'm', 'z'};
     final expected = <String>{'a', 'd', 'g', 'j'};
 
-    final result = filterAvailableLetters(wordlist, box);
+    filterByAvailableLetters(wordlist, box);
 
-    expect(result, expected);
+    expect(wordlist, expected);
   });
 
   test(
@@ -28,13 +28,25 @@ void main() {
       ' (large data set)', () async {
     final box = Box('abc', 'def', 'ghi', 'jkl');
     final wordlist = await loadDictionary('assets/en_dictionary.json');
+
     final initialLength = wordlist.length;
 
-    final result = filterAvailableLetters(wordlist, box);
+    print('initial length:${wordlist.length}');
 
-    print('initial length: $initialLength');
-    print('final length: ${result.length}');
+    filterByAvailableLetters(wordlist, box);
 
-    expect(result.length < initialLength, true);
+    print('final length: ${wordlist.length}');
+
+    expect(wordlist.length < initialLength, true);
+  });
+
+  test('should filter words that starts with "l"', () {
+    // TODO
+  });
+  test('should filter words that ends with "l"', () {
+    // TODO
+  });
+  test('should filter words that contains with "l"', () {
+    // TODO
   });
 }

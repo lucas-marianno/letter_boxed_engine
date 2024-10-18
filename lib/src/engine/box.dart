@@ -1,3 +1,5 @@
+import 'package:encaixado_engine/src/engine/validators/validators.dart';
+
 class Box {
   final String top;
   final String left;
@@ -16,6 +18,12 @@ class Box {
         .split('')
         .where((letter) => !availableLetters.contains(letter))
         .join();
+  }
+
+  factory Box.fromString(String string) {
+    validateBox(string);
+    final b = string.split(' ');
+    return Box(b[0], b[1], b[2], b[3]);
   }
 
   String get availableLetters => top + left + right + bottom;
