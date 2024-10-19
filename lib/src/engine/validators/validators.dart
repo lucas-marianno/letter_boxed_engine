@@ -26,5 +26,6 @@ void validateBox(String? box) {
     throw Exception('\nspacing is incorrect\n$box\n       ^       \n');
   if (box[11] != ' ')
     throw Exception('\nspacing is incorrect\n$box\n           ^   \n');
-  // TODO: add validation for unique letters only
+  if (box.split('').toSet().length != 13)
+    throw Exception('"$box" should not contain repeated letters');
 }

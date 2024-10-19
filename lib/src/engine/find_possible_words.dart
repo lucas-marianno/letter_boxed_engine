@@ -6,14 +6,17 @@ Future<Set<String>> findPossibleWords(
   Box box, {
   String? startsWith,
   String? endsWith,
-  String? contains,
+  String? mustContain,
+  String? mustNotContain,
 }) async {
-  final wordList = await loadDictionary(
-      r'C:\Users\42670\Desktop\Git Clones\Meus\Encaixado\assets\en_dictionary.json');
+  final wordList = await loadDictionary();
 
+  // TODO: The following filters can be hardcoded in the release version to provide better optimization
   filterByLength(wordList, 3);
+  filterByRepeatedSequentialLetters(wordList);
 
   filterByAvailableLetters(wordList, box);
+  filterByBox(wordList, box);
 
   print('found ${wordList.length} words');
 
@@ -24,11 +27,15 @@ Future<Set<String>> findPossibleWords(
   if (endsWith != null && endsWith.isNotEmpty) {
     filterByEndingLetter(wordList, endsWith);
     print('filtered to ${wordList.length} words ending with "$endsWith"');
-    print('\n$wordList');
   }
-  if (contains != null && contains.isNotEmpty) {
-    filterByContainingLetter(wordList, contains);
-    print('filtered to ${wordList.length} containing "$contains"');
+  if (mustContain != null && mustContain.isNotEmpty) {
+    filterByMustContain(wordList, mustContain);
+    print('filtered to ${wordList.length} words containing "$mustContain"');
+  }
+  if (mustNotContain != null && mustNotContain.isNotEmpty) {
+    filterByMustContain(wordList, mustNotContain);
+    print(
+        'filtered to ${wordList.length} words that don\'t contain "$mustNotContain"');
   }
 
   return wordList;
