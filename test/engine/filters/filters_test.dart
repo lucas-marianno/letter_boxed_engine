@@ -42,7 +42,6 @@ void main() {
 
   group('testing `filterByStartingLetter`', () {
     test('should filter words that starts with "A"', () {
-      // TODO
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expectedA = <String>{'abacate', 'animal'};
 
@@ -95,8 +94,6 @@ void main() {
 
       filterByMustContain(wordList, 't');
 
-      print(wordList);
-
       expect(wordList, expected);
     });
     test('should filter words that contains "al"', () {
@@ -105,8 +102,6 @@ void main() {
       final mustContain = 'al';
 
       filterByMustContain(wordList, mustContain);
-
-      print(wordList);
 
       expect(wordList, expected);
     });
@@ -118,8 +113,6 @@ void main() {
 
       filterByMustNotContain(wordList, 't');
 
-      print(wordList);
-
       expect(wordList, expected);
     });
     test('should filter words that dont contain "jl"', () {
@@ -128,8 +121,6 @@ void main() {
       final mustContain = 'jl';
 
       filterByMustNotContain(wordList, mustContain);
-
-      print(wordList);
 
       expect(wordList, expected);
     });
