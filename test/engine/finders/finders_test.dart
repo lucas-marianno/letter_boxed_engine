@@ -10,7 +10,7 @@ void main() {
       final box = Box.fromString('abc def ghi jkl');
       final word = 'abc';
 
-      final result = usesAllLetters(word, box);
+      final result = isSolution(word, box);
 
       expect(result, false);
     });
@@ -19,7 +19,7 @@ void main() {
       final box = Box.fromString('abc def ghi jkl');
       final word = 'abcdefghijkl';
 
-      final result = usesAllLetters(word, box);
+      final result = isSolution(word, box);
 
       expect(result, true);
     });

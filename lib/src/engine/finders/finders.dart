@@ -1,5 +1,43 @@
 import 'package:encaixado_engine/src/engine/box.dart';
 
+/// will return as
+/// ```Dart
+/// List<List<String>> solutions = [
+///     ['abc', 'fgdfg'], // solution 1
+///     ['sdfd', 'sdgdfg', 'ghi'], // solution 2
+///   ];
+/// ```
+List<List<String>>? findSolutions(
+  List<String> wordlist,
+  Box box, [
+  String previous = '',
+]) {
+  List<List<String>> solutions = [];
+
+  for (String word in wordlist) {
+    final possibleSolution = '$previous|$word';
+    if (isSolution(possibleSolution, box)) {
+      solutions.add(possibleSolution.split('|'));
+    }
+  }
+
+  if (solutions.isNotEmpty) return solutions;
+  if (previous.split('|').length >= 6) return null;
+
+  for (String word in wordlist) {
+    final sublist = wordlist.where((w) => isNext(word, w)).toList();
+    sublist.remove(word);
+    final possibleSolutions = findSolutions(sublist, box, '$previous|$word');
+    if (possibleSolutions != null) solutions.addAll(possibleSolutions);
+
+    if (solutions.length >= 100) return solutions;
+  }
+
+  return solutions;
+}
+
+bool isNext(String prev, String next) => prev.runes.last == next.runes.first;
+
 List<List<String>> breadthFirstFinder(List<String> wordlist, Box box,
     [String previousWord = '']) {
   // the list must be ordered from longest word with most unique characters to shortest
@@ -18,8 +56,7 @@ List<List<String>> breadthFirstFinder(List<String> wordlist, Box box,
   // if it doesnt, rinse and reapeat until it finds a sequence that uses all 12
   // or the word sequence reaches 6 words total
 
-  final temp =
-      wordlist.where((word) => usesAllLetters('$previousWord|$word', box));
+  final temp = wordlist.where((word) => isSolution('$previousWord|$word', box));
 
   if (temp.isNotEmpty) {
     print('found some solutions...');
@@ -45,7 +82,7 @@ List<List<String>> breadthFirstFinder(List<String> wordlist, Box box,
 }
 
 /// returns true if word provided uses all twelve letters in box
-bool usesAllLetters(String word, Box box) {
+bool isSolution(String word, Box box) {
   final letters = box.availableLetters.split('');
 
   for (var l in letters) {
