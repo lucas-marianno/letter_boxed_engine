@@ -1,5 +1,5 @@
-import 'package:encaixado_engine/src/domain/usecases/solver.dart';
 import 'package:encaixado_engine/src/extensions/stdout_extension.dart';
+import 'package:encaixado_engine/src/domain/entities/solver.dart';
 import 'package:encaixado_engine/src/domain/entities/box.dart';
 
 void main() async {
