@@ -24,20 +24,18 @@ class Solution {
     final solutionLetters =
         (wordSequence.join().split('').toSet().toList()..sort()).join();
 
+    bool validity = true;
+
     for (String l in boxLetters) {
       if (!solutionLetters.contains(l)) {
-        return Solution._(
-          words: wordSequence,
-          isValid: false,
-          usedLetters: solutionLetters,
-          box: box,
-        );
+        validity = false;
+        break;
       }
     }
 
     return Solution._(
-      words: wordSequence,
-      isValid: true,
+      words: wordSequence.sublist(1),
+      isValid: validity,
       usedLetters: solutionLetters,
       box: box,
     );

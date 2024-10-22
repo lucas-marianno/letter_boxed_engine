@@ -1,9 +1,6 @@
-import 'dart:io';
-
-import 'package:encaixado_engine/src/engine/box.dart';
-import 'package:encaixado_engine/src/engine/find_possible_words.dart';
-
 import 'package:encaixado_engine/extensions/stdout_extension.dart';
+import 'package:encaixado_engine/src/engine/box.dart';
+import 'package:encaixado_engine/src/engine/solver/solver.dart';
 
 void main() async {
   stdout.clear();
@@ -21,16 +18,15 @@ void main() async {
   String? input = stdin.readLineSync();
   bool keepLoop() =>
       input?.toLowerCase() != 'q' && input?.toLowerCase() != 'quit';
-  String box = '';
+  Box? box;
 
   do {
-    while (box.isEmpty && keepLoop()) {
+    while (box == null && keepLoop()) {
       try {
-        Box.validateBox(input);
-        box = input!;
+        box = Box.fromString(input!);
         stdout.clear();
+        break;
       } catch (e) {
-        box = '';
         stdout.clear();
         stdout.writeln(e);
         stdout.writeln(
@@ -41,36 +37,10 @@ void main() async {
       }
     }
 
-    stdout.writeln('\nFiltering...\n(`enter` to skip | `q` to quit)\n\n');
-    stdout.writeln('Starts with (`enter` to skip)');
-    final startsWith = stdin.readLineSync();
-    stdout.writeln('Ends with (`enter` to skip)');
-    final endsWith = stdin.readLineSync();
-    stdout.writeln('Must contain (one or more letters) (`enter` to skip)');
-    final mustContain = stdin.readLineSync();
-    stdout.writeln('Must NOT contain (one or more letters) (`enter` to skip)');
-    final mustNotContain = stdin.readLineSync();
-
-    final wordList = await findPossibleWords(
-      Box.fromString(box),
-      startsWith: startsWith,
-      endsWith: endsWith,
-      mustContain: mustContain,
-      mustNotContain: mustNotContain,
-    );
-
-    stdout.writeln(sortByMostUniqueLetters(wordList));
-    stdout.writeln('\n(`enter` to continue | `q` to quit)\n');
+    await solver(box!);
+    box = null;
+    stdout.writeln(
+        '\n(write a new `letter box` to find solutions | `q` to quit)\n');
     input = stdin.readLineSync();
   } while (keepLoop());
-}
-
-List<String> sortByMostUniqueLetters(Set<String> wordList) {
-  return wordList.toList()
-    ..sort((a, b) {
-      int aLen = a.runes.toSet().length;
-      int bLen = b.runes.toSet().length;
-
-      return bLen.compareTo(aLen);
-    });
 }
