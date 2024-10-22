@@ -1,38 +1,28 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 class Box {
-  final String top;
-  final String left;
-  final String right;
-  final String bottom;
+  final List<String> letterBox;
+  late final String availableLetters;
+  late final String unavailableLetters;
 
-  static const _alpha = 'abcdefghijklmnopqrstuvwxyz';
-  late final String _unavailable;
-
-  Box(this.top, this.left, this.right, this.bottom)
-      : assert(top.length == 3),
-        assert(left.length == 3),
-        assert(right.length == 3),
-        assert(bottom.length == 3) {
-    validateBox('$top $left $right $bottom');
-    _unavailable = _alpha
+  Box._(this.letterBox) {
+    availableLetters = letterBox.join().split('').toSet().join();
+    unavailableLetters = 'abcdefghijklmnopqrstuvwxyz'
         .split('')
+        .toSet()
         .where((letter) => !availableLetters.contains(letter))
         .join();
   }
 
   factory Box.fromString(String string) {
-    validateBox(string);
-    final b = string.split(' ');
-    return Box(b[0], b[1], b[2], b[3]);
+    _validate(string);
+    return Box._(string.split(' '));
   }
 
-  String get availableLetters => top + left + right + bottom;
+  @override
+  String toString() => letterBox.join(' ');
 
-  String get unavailableLetters => _unavailable;
-
-  static void validateBox(String? box) {
-    if (box == null) throw Exception('"$box" is `null`');
+  static void _validate(String box) {
     if (box.isEmpty) throw Exception('"$box" is `empty`');
     if (box.length != 15)
       throw Exception('"$box" should be exactly 15 characters long.\n');
@@ -52,7 +42,4 @@ class Box {
     if (box.split('').toSet().length != 13)
       throw Exception('"$box" should not contain repeated letters');
   }
-
-  @override
-  String toString() => '$top $left $right $bottom';
 }

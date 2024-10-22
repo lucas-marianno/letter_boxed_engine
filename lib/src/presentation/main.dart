@@ -1,6 +1,6 @@
-import 'package:encaixado_engine/extensions/stdout_extension.dart';
-import 'package:encaixado_engine/src/engine/box.dart';
-import 'package:encaixado_engine/src/engine/solver/solver.dart';
+import 'package:encaixado_engine/src/domain/usecases/solver.dart';
+import 'package:encaixado_engine/src/extensions/stdout_extension.dart';
+import 'package:encaixado_engine/src/domain/entities/box.dart';
 
 void main() async {
   stdout.clear();
@@ -37,7 +37,11 @@ void main() async {
       }
     }
 
-    await solver(box!);
+    final solutions = await LetterBoxSolver(box!).findSolutions();
+    stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
+    for (var s in solutions) {
+      stdout.writeln(s.words);
+    }
     box = null;
     stdout.writeln(
         '\n(write a new `letter box` to find solutions | `q` to quit)\n');

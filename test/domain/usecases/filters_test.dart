@@ -1,24 +1,15 @@
 import 'package:encaixado_engine/src/data/load_dictionary.dart';
-import 'package:encaixado_engine/src/engine/box.dart';
-import 'package:encaixado_engine/src/engine/filters/filters.dart';
+import 'package:encaixado_engine/src/domain/entities/box.dart';
+import 'package:encaixado_engine/src/domain/usecases/filters.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('should remove all words with 3 letters or less', () {
-    final wordSet = <String>{'a', 'ab', 'abc', 'abcd'};
-    final expected = <String>{'abc', 'abcd'};
-
-    filterByLength(wordSet, 3);
-
-    expect(wordSet, expected);
-  });
-
   test('should remove all words that contain unavailable letters', () {
-    final box = Box('abc', 'def', 'ghi', 'jkl');
+    final box = Box.fromString('abc def ghi jkl');
     final wordlist = <String>{'a', 'd', 'g', 'j', 'm', 'z'};
     final expected = <String>{'a', 'd', 'g', 'j'};
 
-    filterByAvailableLetters(wordlist, box);
+    Filter(wordlist: wordlist, box: box).byAvailableLetters();
 
     expect(wordlist, expected);
   });
@@ -26,14 +17,14 @@ void main() {
   test(
       'should remove all words that contain unavailable letters'
       ' (large data set)', () async {
-    final box = Box('abc', 'def', 'ghi', 'jkl');
+    final box = Box.fromString('abc def ghi jkl');
     final wordlist = await loadDictionary('assets/en_dictionary.json');
 
     final initialLength = wordlist.length;
 
     print('initial length:${wordlist.length}');
 
-    filterByAvailableLetters(wordlist, box);
+    Filter(wordlist: wordlist, box: box).byAvailableLetters();
 
     print('final length: ${wordlist.length}');
 
@@ -45,7 +36,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expectedA = <String>{'abacate', 'animal'};
 
-      filterByStartingLetter(wordList, 'a');
+      Filter(wordlist: wordList).byStartingLetter('a');
 
       expect(wordList, expectedA);
     });
@@ -53,7 +44,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expectedB = <String>{'berinjela', 'buceta'};
 
-      filterByStartingLetter(wordList, 'b');
+      Filter(wordlist: wordList).byStartingLetter('b');
 
       expect(wordList, expectedB);
     });
@@ -61,8 +52,8 @@ void main() {
     test('should filter out everything (empty wordlist)', () {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
 
-      filterByStartingLetter(wordList, 'a');
-      filterByStartingLetter(wordList, 'b');
+      Filter(wordlist: wordList).byStartingLetter('a');
+      Filter(wordlist: wordList).byStartingLetter('b');
 
       expect(wordList, isEmpty);
     });
@@ -73,7 +64,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expected = <String>{'berinjela', 'buceta'};
 
-      filterByEndingLetter(wordList, 'a');
+      Filter(wordlist: wordList).byEndingLetter('a');
 
       expect(wordList, expected);
     });
@@ -82,7 +73,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expected = <String>{'animal'};
 
-      filterByEndingLetter(wordList, 'l');
+      Filter(wordlist: wordList).byEndingLetter('l');
 
       expect(wordList, expected);
     });
@@ -92,7 +83,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expected = <String>{'abacate', 'buceta'};
 
-      filterByMustContain(wordList, 't');
+      Filter(wordlist: wordList).byMustContain('t');
 
       expect(wordList, expected);
     });
@@ -101,7 +92,7 @@ void main() {
       final expected = <String>{'berinjela', 'animal'};
       final mustContain = 'al';
 
-      filterByMustContain(wordList, mustContain);
+      Filter(wordlist: wordList).byMustContain(mustContain);
 
       expect(wordList, expected);
     });
@@ -111,7 +102,7 @@ void main() {
       final wordList = <String>{'abacate', 'berinjela', 'buceta', 'animal'};
       final expected = <String>{'berinjela', 'animal'};
 
-      filterByMustNotContain(wordList, 't');
+      Filter(wordlist: wordList).byMustNotContain('t');
 
       expect(wordList, expected);
     });
@@ -120,7 +111,7 @@ void main() {
       final expected = <String>{'abacate', 'buceta'};
       final mustContain = 'jl';
 
-      filterByMustNotContain(wordList, mustContain);
+      Filter(wordlist: wordList).byMustNotContain(mustContain);
 
       expect(wordList, expected);
     });
@@ -152,8 +143,39 @@ void main() {
     };
     final expected = <String>{'ambidec'};
 
-    filterAdjacentLetters(wordList, 'abc');
+    Filter(wordlist: wordList).byAdjacentLetters('abc');
 
     expect(wordList, expected);
+  });
+
+  test('should filter out words that dont fit box', () {
+    final box = Box.fromString('abc def ghi jkl');
+    final wordlist = {'abel', 'defi', 'gala', 'lake'};
+    final expected = {'gala', 'lake'};
+
+    Filter(wordlist: wordlist, box: box).byBox();
+
+    expect(wordlist, expected);
+  });
+
+  group('testing `isValidWord`', () {
+    test('should return true for words containing only valid letters', () {
+      final box = Box.fromString('abc def ghi jkl');
+      final validWord = 'abcdalk';
+
+      final validResult = Filter(wordlist: {}, box: box).isValidWord(validWord);
+
+      expect(validResult, true);
+    });
+
+    test('should return false for words containing invalid letters', () {
+      final box = Box.fromString('abc def ghi jkl');
+      final invalidWord = 'abcz';
+
+      final invalidResult =
+          Filter(wordlist: {}, box: box).isValidWord(invalidWord);
+
+      expect(invalidResult, false);
+    });
   });
 }

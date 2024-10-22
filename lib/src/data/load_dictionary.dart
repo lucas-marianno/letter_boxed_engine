@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:encaixado_engine/src/engine/filters/filters.dart';
-
 Future<Set<String>> loadDictionary([String? path]) async {
   path ??= '../../../assets/popular.json';
 
@@ -22,4 +20,12 @@ Future<Set<String>> loadDictionary([String? path]) async {
 
   print('loaded dictionary with ${dictionary.length} valid words');
   return dictionary;
+}
+
+void filterByLength(Set<String> wordlist, int minLength) {
+  wordlist.retainWhere((word) => word.length >= minLength);
+}
+
+void filterByRepeatedSequentialLetters(Set<String> wordList) {
+  wordList.removeWhere((word) => word.contains(RegExp(r'(\w)\1')));
 }
