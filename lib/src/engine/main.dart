@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:encaixado_engine/src/engine/box.dart';
 import 'package:encaixado_engine/src/engine/find_possible_words.dart';
-import 'package:encaixado_engine/src/engine/validators/validators.dart';
 
-import 'package:encaixado_engine/src/extensions.dart';
+import 'package:encaixado_engine/extensions/stdout_extension.dart';
 
 void main() async {
   stdout.clear();
@@ -27,7 +26,7 @@ void main() async {
   do {
     while (box.isEmpty && keepLoop()) {
       try {
-        validateBox(input);
+        Box.validateBox(input);
         box = input!;
         stdout.clear();
       } catch (e) {
@@ -66,7 +65,7 @@ void main() async {
   } while (keepLoop());
 }
 
-Iterable<String> sortByMostUniqueLetters(Set<String> wordList) {
+List<String> sortByMostUniqueLetters(Set<String> wordList) {
   return wordList.toList()
     ..sort((a, b) {
       int aLen = a.runes.toSet().length;

@@ -22,39 +22,4 @@ void main() {
       expect(invalidResult, false);
     });
   });
-
-  group('testing `isValidBox`', () {
-    test('should return false if box is null', () {
-      expect(() => validateBox(null), throwsException);
-    });
-    test('should return false if box is empty', () {
-      expect(() => validateBox(''), throwsException);
-    });
-    test('should return false if box.length is not 15', () {
-      expect(() => validateBox('abababab'), throwsException);
-      expect(() => validateBox('ababababsadsadasdasdasdasdasdasdasd'),
-          throwsException);
-    });
-    test(
-        'should return false if box contains anything other than words and spaces',
-        () {
-      expect(() => validateBox('abc def ghi jk6'), throwsException);
-      expect(() => validateBox('abc def ghi-jkl'), throwsException);
-    });
-    test('should return false spacing is incorrect', () {
-      expect(() => validateBox('abcd ef ghi jkl'), throwsException);
-    });
-    test('should return false if n of letters is incorrect', () {
-      expect(() => validateBox('               '), throwsException);
-      expect(() => validateBox('abcdefghijklmno'), throwsException);
-    });
-    test('should return false if n of spaces is incorrect', () {
-      expect(() => validateBox('               '), throwsException);
-      expect(() => validateBox('abcdefghijklmno'), throwsException);
-    });
-    test('should return true for a valid box (should not match case)', () {
-      expect(() => validateBox('abc def ghi jkl'), returnsNormally);
-      expect(() => validateBox('ABC DEF GHI JKL'), returnsNormally);
-    }); //                    '123456789012345'
-  });
 }

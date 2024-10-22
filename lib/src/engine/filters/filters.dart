@@ -11,6 +11,7 @@ void filterByAvailableLetters(Set<String> wordlist, Box box) {
 }
 
 void filterByStartingLetter(Set<String> wordList, String startsWith) {
+  if (startsWith.isEmpty) return;
   assert(startsWith.length == 1);
 
   wordList.retainWhere((word) => word[0] == startsWith);
