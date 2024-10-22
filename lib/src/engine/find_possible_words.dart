@@ -11,10 +11,6 @@ Future<Set<String>> findPossibleWords(
 }) async {
   final wordList = await loadDictionary();
 
-  // TODO: The following filters can be hardcoded in the release version to provide better optimization
-  filterByLength(wordList, 3);
-  filterByRepeatedSequentialLetters(wordList);
-
   filterByAvailableLetters(wordList, box);
   filterByBox(wordList, box);
 
