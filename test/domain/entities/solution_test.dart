@@ -12,6 +12,10 @@ void main() {
     final filter = Filter(wordlist: dictionary, box: box);
     filter.byBox();
     filter.byAvailableLetters();
+
+    filter.byStartingLetter('e');
+    filter.byMustContain('');
+
     final wordlist = sortByMostUniqueLetters(dictionary);
 
     print(wordlist);
@@ -19,7 +23,7 @@ void main() {
 
   test('should return false if not solution', () {
     final box = Box.fromString('abc def ghi jkl');
-    final possibleSolution = ['alfa'];
+    final possibleSolution = ['alfa', 'fil'];
 
     final response = Solution.validate(possibleSolution, box);
 
@@ -28,7 +32,16 @@ void main() {
 
   test('should return true if is solution', () {
     final box = Box.fromString('abc def ghi jkl');
-    final possibleSolution = ['abcdefghijkl'];
+    final possibleSolution = ['abcdef', 'ghijkl'];
+
+    final response = Solution.validate(possibleSolution, box);
+
+    expect(response.isValid, true);
+  });
+  test('should return true if is solution (real puzzle)', () {
+    final box = Box.fromString('igh fym oea lpr');
+
+    final possibleSolution = ['foliage', 'ephemeral', 'lye'];
 
     final response = Solution.validate(possibleSolution, box);
 

@@ -32,6 +32,7 @@ class LetterBoxSolver {
     if (!hasInitialized) await _init();
 
     stdout.clear();
+    stdout.writeln('looking for solutions...');
 
     final sw = Stopwatch()..start();
     final solutions = <Solution>[];
@@ -43,20 +44,22 @@ class LetterBoxSolver {
         solutions.length < maxSolutions &&
         sw.elapsedMilliseconds < _timeout.inMilliseconds) {
       final current = queue.removeAt(0);
-      print('$current | queue:${queue.length} (${sw.elapsedMilliseconds}ms)');
 
       final currentSolution = Solution.validate(current, box);
 
       if (!currentSolution.isValid) {
-        Iterable nextList =
-            _wordlist.where((w) => w[0] == current.last.lastChar);
-        if (nextList.isEmpty) nextList = _wordlist;
-
-        for (String word in nextList) {
+        for (String word in _wordlist.where((w) {
+          final lastChar = current.last.lastChar;
+          if (lastChar == '') return true;
+          return w[0] == lastChar;
+        })) {
           queue.add(current + [word]);
         }
       } else {
         solutions.add(currentSolution);
+
+        stdout.clear();
+        stdout.writeln('found ${solutions.length} solutions');
       }
     }
     sw.stop();

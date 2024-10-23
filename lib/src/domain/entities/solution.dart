@@ -12,7 +12,7 @@ class Solution {
 
     bool validity = true;
 
-    for (String l in box.letterBox) {
+    for (String l in box.availableLetters.split('')) {
       if (!solutionLetters.contains(l)) {
         validity = false;
         break;
@@ -21,4 +21,6 @@ class Solution {
 
     return Solution._(words: wordSequence.sublist(1), isValid: validity);
   }
+  @override
+  String toString() => words.toString();
 }
