@@ -41,7 +41,7 @@ class Cli {
       final solutions = await LetterBoxSolver(box!).findSolutions();
       stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
       for (var s in solutions) {
-        stdout.writeln(s.words);
+        stdout.writeln(s);
       }
       box = null;
       stdout.writeln(

@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:encaixado_engine/src/extensions/stdout_extension.dart';
 import 'package:encaixado_engine/src/data/load_dictionary.dart';
 import 'package:encaixado_engine/src/domain/entities/box.dart';
 import 'package:encaixado_engine/src/domain/usecases/filters.dart';
-import 'package:encaixado_engine/src/domain/entities/solution.dart';
+// import 'package:encaixado_engine/src/domain/entities/solution.dart';
 import 'package:encaixado_engine/src/domain/usecases/sorters.dart';
 import 'package:encaixado_engine/src/extensions/string_extension.dart';
 
 class LetterBoxSolver {
   final Box box;
   late final int maxSolutions;
+  final _solutions = <List<String>>[];
+  final _sw = Stopwatch();
   late final Duration _timeout;
   late List<String> _wordlist;
 
@@ -28,42 +32,56 @@ class LetterBoxSolver {
     hasInitialized = true;
   }
 
-  Future<List<Solution>> findSolutions() async {
+  Future<List<List<String>>> findSolutions() async {
     if (!hasInitialized) await _init();
 
+    _sw.start();
     stdout.clear();
     stdout.writeln('looking for solutions...');
 
-    final sw = Stopwatch()..start();
-    final solutions = <Solution>[];
     final queue = <List<String>>[
       ['']
     ];
 
-    while (queue.isNotEmpty &&
-        solutions.length < maxSolutions &&
-        sw.elapsedMilliseconds < _timeout.inMilliseconds) {
+    while (queue.isNotEmpty && !_reachedMaxSolutions() && !_hasTimedOut()) {
       final current = queue.removeAt(0);
 
-      final currentSolution = Solution.validate(current, box);
+      if (!_isSolution(current)) {
+        final startLetter = current.last.lastChar;
 
-      if (!currentSolution.isValid) {
-        for (String word in _wordlist.where((w) {
-          final lastChar = current.last.lastChar;
-          if (lastChar == '') return true;
-          return w[0] == lastChar;
-        })) {
-          queue.add(current + [word]);
+        if (startLetter.isEmpty) {
+          for (String word in _wordlist) {
+            queue.add([word]);
+          }
+        } else {
+          final nextList = _wordlist.where((w) => w.startsWith(startLetter));
+
+          for (String word in nextList) {
+            queue.add(current + [word]);
+          }
         }
       } else {
-        solutions.add(currentSolution);
+        _solutions.add(current);
 
         stdout.clear();
-        stdout.writeln('found ${solutions.length} solutions');
+        stdout.writeln('found ${_solutions.length} solutions');
       }
     }
-    sw.stop();
 
-    return solutions;
+    return _solutions;
+  }
+
+  bool _reachedMaxSolutions() => _solutions.length > maxSolutions;
+
+  bool _hasTimedOut() => _sw.elapsedMilliseconds > _timeout.inMilliseconds;
+
+  bool _isSolution(List<String> wordSequence) {
+    final solutionLetters = wordSequence.join().split('').toSet();
+
+    for (String l in box.availableLetters.split('')) {
+      if (!solutionLetters.contains(l)) return false;
+    }
+
+    return true;
   }
 }
