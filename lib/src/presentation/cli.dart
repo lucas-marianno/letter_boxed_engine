@@ -1,9 +1,12 @@
+import 'package:encaixado_engine/src/data/load_dictionary.dart';
 import 'package:encaixado_engine/src/extensions/stdout_extension.dart';
 import 'package:encaixado_engine/src/domain/entities/solver.dart';
 import 'package:encaixado_engine/src/domain/entities/box.dart';
 
 class Cli {
   void call() async {
+    final dictionary =
+        await loadDictionary('assets/en_popular_valid_words_only.json');
     stdout.clear();
     stdout.writeln(
         "Let's find some possible words that might solve today's Letter Boxed.\n\n"
@@ -38,7 +41,7 @@ class Cli {
         }
       }
 
-      final solutions = await LetterBoxSolver(box!).findSolutions();
+      final solutions = await LetterBoxSolver(box!, dictionary).findSolutions();
       stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
       for (var s in solutions) {
         stdout.writeln(s);

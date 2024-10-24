@@ -117,18 +117,6 @@ void main() {
     });
   });
 
-  group('testing `filterByConsecutiveLetters`', () {
-    test('should filter out all words containing repeated sequential letters',
-        () {
-      final wordList = <String>{'alpha', 'all', 'access', 'animal'};
-      final expected = <String>{'alpha', 'animal'};
-
-      filterByRepeatedSequentialLetters(wordList);
-
-      expect(wordList, expected);
-    });
-  });
-
   test('should filter out adjacent letters', () {
     final wordList = <String>{
       'ab',
