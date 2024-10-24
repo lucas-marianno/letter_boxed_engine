@@ -12,7 +12,7 @@ void main() async {
 
     test('should find at least one valid solution in under 20 seconds',
         () async {
-      final solver = LetterBoxSolver(box, dictionary);
+      final solver = LetterBoxSolver(box, dictionary, wordCount: 3);
 
       final solutions = await solver.findSolutions();
 
@@ -22,11 +22,8 @@ void main() async {
     });
 
     test('should find 5 solutions in under 30s', () async {
-      final solver = LetterBoxSolver(
-        box,
-        dictionary,
-        maxSolutions: 5,
-      );
+      final solver =
+          LetterBoxSolver(box, dictionary, maxSolutions: 5, wordCount: 3);
       final sw = Stopwatch()..start();
       final solutions = await solver.findSolutions();
 

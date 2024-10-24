@@ -9,7 +9,7 @@ import 'package:encaixado_engine/src/extensions/string_extension.dart';
 class LetterBoxSolver {
   final Box box;
   final int maxSolutions;
-  final int maxWordSolutions;
+  final int wordCount;
   final Set<String> dictionary;
   late List<String> _wordlist;
 
@@ -17,9 +17,9 @@ class LetterBoxSolver {
     this.box,
     this.dictionary, {
     this.maxSolutions = 10,
-    this.maxWordSolutions = 2,
+    this.wordCount = 2,
   }) {
-    assert(maxWordSolutions > 0 && maxWordSolutions < 5);
+    assert(wordCount > 0 && wordCount < 5);
     _init();
   }
 
@@ -32,13 +32,13 @@ class LetterBoxSolver {
     _populateWithSingleWords(queue);
 
     print('found ${queue.length} single word solutions');
-    if (maxWordSolutions <= 1) return queue;
+    if (wordCount <= 1) return queue;
 
     _populateWith2words(queue);
 
     print('found ${queue.length} solutions with 2 words');
 
-    if (maxWordSolutions <= 2) return queue;
+    if (wordCount <= 2) return queue;
 
     _populateWith3words(queue);
     _filterSolutionsAndRemoveFromWordList(queue);
@@ -46,7 +46,7 @@ class LetterBoxSolver {
     print('found ${queue.length} solutions with 3 words');
 
     // highly demanding 4 word sequence
-    if (maxWordSolutions <= 3) return queue;
+    if (wordCount <= 3) return queue;
     print('looking for solutions with 4 words');
 
     _populateWith4words(queue);
@@ -95,15 +95,23 @@ class LetterBoxSolver {
   }
 
   void _filterSolutionsAndRemoveFromWordList(List<List<String>> queue) {
+    print('wordlist size: ${_wordlist.length}');
     queue.retainWhere((s) {
-      if (s.join().split('').toSet().length > 11) {
+      final strSolution = s.join().split('').toSet();
+      if (strSolution.length > 11) {
         for (String word in s) {
           _wordlist.remove(word);
         }
+        // strSolution.remove(strSolution.last);
+        // for (var char in strSolution) {
+        //   _wordlist.removeWhere((w) => w.contains(char));
+        // }
+
         return true;
       }
       return false;
     });
+    print('wordlist size: ${_wordlist.length}');
   }
 
   void _init() {
