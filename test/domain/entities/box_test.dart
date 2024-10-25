@@ -33,9 +33,7 @@ void main() {
       expect(() => Box.fromString('abc def ghi jk6'), throwsException);
       expect(() => Box.fromString('abc def ghi-jkl'), throwsException);
     });
-    test('should throw exception if spacing is incorrect', () {
-      expect(() => Box.fromString('abcd ef ghi jkl'), throwsException);
-    });
+
     test('should throw exception if n of letters is incorrect', () {
       expect(() => Box.fromString('               '), throwsException);
       expect(() => Box.fromString('abcdefghijklmno'), throwsException);

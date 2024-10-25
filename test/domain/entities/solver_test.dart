@@ -12,9 +12,9 @@ void main() async {
 
     test('should find at least one valid solution in under 20 seconds',
         () async {
-      final solver = LetterBoxSolver(box, dictionary, wordCount: 3);
+      final solver = LetterBoxSolver(box, dictionary);
 
-      final solutions = await solver.findSolutions();
+      final solutions = await solver.findSolutions(withLength: 3);
 
       expect(solutions, isNotEmpty);
       expect(solutions[0], isNotEmpty);
@@ -22,10 +22,9 @@ void main() async {
     });
 
     test('should find 5 solutions in under 30s', () async {
-      final solver =
-          LetterBoxSolver(box, dictionary, maxSolutions: 5, wordCount: 3);
+      final solver = LetterBoxSolver(box, dictionary, maxSolutions: 5);
       final sw = Stopwatch()..start();
-      final solutions = await solver.findSolutions();
+      final solutions = await solver.findSolutions(withLength: 3);
 
       final ms = (sw..stop()).elapsedMilliseconds;
       expect(ms <= 30000, true,
