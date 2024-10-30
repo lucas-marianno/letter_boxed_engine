@@ -1,7 +1,7 @@
-import 'package:encaixado_engine/src/data/load_dictionary.dart';
-import 'package:encaixado_engine/src/extensions/stdout_extension.dart';
-import 'package:encaixado_engine/src/domain/entities/solver.dart';
-import 'package:encaixado_engine/src/domain/entities/box.dart';
+import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
+import 'package:letter_boxed_engine/src/extensions/stdout_extension.dart';
+import 'package:letter_boxed_engine/src/domain/entities/solver.dart';
+import 'package:letter_boxed_engine/src/domain/entities/box.dart';
 
 class Cli {
   void call() async {

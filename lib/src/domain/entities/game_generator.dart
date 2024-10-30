@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:encaixado_engine/encaixado.dart';
-import 'package:encaixado_engine/src/domain/entities/game_box.dart';
+import 'package:letter_boxed_engine/encaixado.dart';
+import 'package:letter_boxed_engine/src/domain/entities/game_box.dart';
 
 class GameGenerator {
   // generate box | random pick 12 letters

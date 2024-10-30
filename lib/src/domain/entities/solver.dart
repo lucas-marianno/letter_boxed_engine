@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:encaixado_engine/src/domain/entities/box.dart';
-import 'package:encaixado_engine/src/domain/usecases/filters.dart';
-import 'package:encaixado_engine/src/domain/usecases/sorters.dart';
-import 'package:encaixado_engine/src/extensions/string_extension.dart';
+import 'package:letter_boxed_engine/src/domain/entities/box.dart';
+import 'package:letter_boxed_engine/src/domain/usecases/filters.dart';
+import 'package:letter_boxed_engine/src/domain/usecases/sorters.dart';
+import 'package:letter_boxed_engine/src/extensions/string_extension.dart';
 
 class LetterBoxSolver {
   final Box box;

@@ -1,4 +1,4 @@
-import 'package:encaixado_engine/src/data/load_dictionary.dart';
+import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
 import 'package:test/test.dart';
 
 void main() {

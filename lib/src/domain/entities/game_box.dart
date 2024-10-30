@@ -1,4 +1,4 @@
-import 'package:encaixado_engine/encaixado.dart';
+import 'package:letter_boxed_engine/encaixado.dart';
 
 class GameBox {
   final Box box;

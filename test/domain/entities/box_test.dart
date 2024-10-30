@@ -1,4 +1,4 @@
-import 'package:encaixado_engine/src/domain/entities/box.dart';
+import 'package:letter_boxed_engine/src/domain/entities/box.dart';
 import 'package:test/test.dart';
 
 void main() {
