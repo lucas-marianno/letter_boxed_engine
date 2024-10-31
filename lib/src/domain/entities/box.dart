@@ -75,6 +75,7 @@ class Box {
   /// 'ALPHA' // not allowed - uses letters not contained in the box
   /// ```
   Pattern denied() {
+    final az = '[^a-z]';
     final repeatedSequencial = r'(\w)\1';
     final unavailable = '[$unavailableLetters]';
     String adjacent = '';
@@ -86,7 +87,7 @@ class Box {
 
       adjacent += '$a$b|$b$a|$a$c|$c$a|$b$c|$c$b|';
     }
-    final r = '$repeatedSequencial|$unavailable|$adjacent';
+    final r = '$az|$repeatedSequencial|$unavailable|$adjacent';
 
     return RegExp(r.substring(0, r.length - 1), caseSensitive: false);
   }

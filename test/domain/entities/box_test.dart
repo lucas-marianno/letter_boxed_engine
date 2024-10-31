@@ -65,6 +65,10 @@ void main() {
       expect('alpha'.contains(box.denied()), true);
       expect('ALPHA'.contains(box.denied()), true);
     });
+    test('should deny the input (contains invalid characters)', () {
+      expect('alpha '.contains(box.denied()), true);
+      expect('ALPHA1'.contains(box.denied()), true);
+    });
     test('should deny the input (contains adjacent same side letters)', () {
       expect('dehli'.contains(box.denied()), true);
       expect('DEHLI'.contains(box.denied()), true);
