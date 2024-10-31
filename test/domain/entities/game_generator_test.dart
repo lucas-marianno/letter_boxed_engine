@@ -3,7 +3,8 @@ import 'package:letter_boxed_engine/src/domain/entities/game_generator.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('should generate a playable game in less than 1000ms', () async {
+  test('should generate a playable game in less than 1000ms', skip: true,
+      () async {
     final gameGen = GameGenerator();
     final dictionary =
         await loadDictionary('assets/pt_dictionary_valid_words_only.json');

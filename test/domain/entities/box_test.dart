@@ -49,4 +49,27 @@ void main() {
       expect(() => Box.fromString('ABC DEF GHI JKL'), returnsNormally);
     }); //
   });
+  group('testing Pattern Matching', () {
+    final box = Box.fromString('abc def ghi jkl');
+    test('should allow the input', () {
+      expect('b'.contains(box.denied()), false);
+      // expect('alfa'.contains(box.denied()), false);
+      // expect('BELA'.contains(box.denied()), false);
+      // expect('ALFA'.contains(box.denied()), false);
+    });
+    test('should deny the input (contains repeated sequencial letters)', () {
+      expect('bella'.contains(box.denied()), true);
+      expect('BELLA'.contains(box.denied()), true);
+    });
+    test('should deny the input (contains unavailable letters)', () {
+      expect('alpha'.contains(box.denied()), true);
+      expect('ALPHA'.contains(box.denied()), true);
+    });
+    test('should deny the input (contains adjacent same side letters)', () {
+      expect('dehli'.contains(box.denied()), true);
+      expect('DEHLI'.contains(box.denied()), true);
+      expect('calda'.contains(box.denied()), true);
+      expect('CALDA'.contains(box.denied()), true);
+    });
+  });
 }

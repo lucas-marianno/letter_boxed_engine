@@ -4,10 +4,10 @@ class Box {
   /// Each element in [letterBox] represents a box side containing `3` letters.
   final List<String> letterBox;
 
-  /// The `12` unique `a-z` letters that are present the box.
+  /// The `12` unique `a-z` letters that are present the box (not in order).
   late final String availableLetters;
 
-  /// The `14` unique `a-z` letters that **are not** present in the box.
+  /// The `14` unique `a-z` letters that **are not** present in the box (not in order).
   late final String unavailableLetters;
 
   Box._(this.letterBox) {
@@ -19,6 +19,7 @@ class Box {
         .join();
   }
 
+  /// Creates a new [Box] object from a given string. Example: `'abc def ghi jkl'`
   factory Box.fromString(String string) {
     string = string.replaceAll(' ', '');
     _validate(string);
@@ -41,6 +42,7 @@ class Box {
       throw Exception('"$box" should not contain repeated letters');
   }
 
+  /// Returns a String representation of the given [Box]. Example: `'abc def ghi jkl'`
   @override
   String toString() => letterBox.join(' ');
 
@@ -54,4 +56,40 @@ class Box {
 
   @override
   int get hashCode => letterBox.hashCode;
+
+  /// Returns a [Pattern] that matches any strings not allowed in [letterBox]. **Not case sensitive**
+  ///
+  /// It takes the box sides into consideration.
+  ///
+  /// Example box: `'abc def ghi jkl'`
+  /// ```
+  ///      A B C
+  ///     D     G
+  ///     E     H
+  ///     F     I
+  ///      J K L
+  ///
+  /// 'BELA' // allowed
+  /// 'BELLA' // not allowed - uses repeated sequencial letters
+  /// 'BAD' // not allowed - uses adjacent letters
+  /// 'ALPHA' // not allowed - uses letters not contained in the box
+  /// ```
+  Pattern denied() {
+    final repeatedSequencial = r'(\w)\1';
+    final unavailable = '[$unavailableLetters]';
+    String adjacent = '';
+
+    for (var boxSide in letterBox) {
+      final a = boxSide[0];
+      final b = boxSide[1];
+      final c = boxSide[2];
+
+      adjacent += '$a$b|$b$a|$a$c|$c$a|$b$c|$c$b|';
+    }
+    String r = '$repeatedSequencial|$unavailable|$adjacent';
+    r = r.substring(0, r.length - 1);
+
+    print(r);
+    return RegExp(r, caseSensitive: false);
+  }
 }

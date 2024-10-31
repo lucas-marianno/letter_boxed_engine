@@ -39,7 +39,6 @@ class Filter {
   /// print(wordList); // {'berinjela', 'animal'};
   ///
   /// ```
-  ///
   void byMustContain(String mustContain) {
     assert(!mustContain.contains(RegExp('[^a-z]')), 'enter only a-z letters');
 
@@ -94,7 +93,7 @@ class Filter {
   }
 
   bool isValidWord(String word) {
-    final r = box?.unavailableLetters.split('').map((e) => '$e|').join();
+    final r = box?.unavailableLetters.split('').join('|');
 
     return !word.contains(RegExp('[$r]'));
   }
