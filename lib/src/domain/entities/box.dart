@@ -86,10 +86,8 @@ class Box {
 
       adjacent += '$a$b|$b$a|$a$c|$c$a|$b$c|$c$b|';
     }
-    String r = '$repeatedSequencial|$unavailable|$adjacent';
-    r = r.substring(0, r.length - 1);
+    final r = '$repeatedSequencial|$unavailable|$adjacent';
 
-    print(r);
-    return RegExp(r, caseSensitive: false);
+    return RegExp(r.substring(0, r.length - 1), caseSensitive: false);
   }
 }
