@@ -1,12 +1,10 @@
 import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
 import 'package:letter_boxed_engine/src/extensions/stdout_extension.dart';
-import 'package:letter_boxed_engine/src/domain/entities/solver.dart';
-import 'package:letter_boxed_engine/src/domain/entities/box.dart';
+import 'package:letter_boxed_engine/src/letter_boxed_engine_base.dart';
 
 class Cli {
   void call() async {
-    final dictionary =
-        await loadDictionary('assets/en_popular_valid_words_only.json');
+    final dictionary = await loadDictionary(GameLanguage.en);
     stdout.clear();
     stdout.writeln(
         "Let's find some possible words that might solve today's Letter Boxed.\n\n"
@@ -27,7 +25,7 @@ class Cli {
     do {
       while (box == null && keepLoop()) {
         try {
-          box = Box.fromString(input!);
+          box = Box(fromString: input!);
           stdout.clear();
           break;
         } catch (e) {
@@ -41,7 +39,7 @@ class Cli {
         }
       }
 
-      final solutions = await LetterBoxSolver(box!, dictionary).findSolutions();
+      final solutions = await SolveGameBox(box!, dictionary).call();
       stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
       for (var s in solutions) {
         stdout.writeln(s);

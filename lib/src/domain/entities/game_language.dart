@@ -1,0 +1,1 @@
+enum GameLanguage { pt, en }
