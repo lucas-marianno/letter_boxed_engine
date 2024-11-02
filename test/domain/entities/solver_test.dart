@@ -12,7 +12,7 @@ void main() async {
         () async {
       final solver = SolveGameBox(box, dictionary);
 
-      final solutions = await solver.call(withLength: 3);
+      final solutions = await solver.solve(withLength: 3);
 
       expect(solutions, isNotEmpty);
       expect(solutions[0], isNotEmpty);
@@ -22,7 +22,7 @@ void main() async {
     test('should find 5 solutions in under 30s', () async {
       final solver = SolveGameBox(box, dictionary, maxSolutions: 5);
       final sw = Stopwatch()..start();
-      final solutions = await solver.call(withLength: 3);
+      final solutions = await solver.solve(withLength: 3);
 
       final ms = (sw..stop()).elapsedMilliseconds;
       expect(ms <= 30000, true,

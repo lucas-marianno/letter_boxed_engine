@@ -1,14 +1,21 @@
-import 'package:letter_boxed_engine/src/domain/entities/game_language.dart';
-import 'package:letter_boxed_engine/src/domain/usecases/game_generator.dart';
+import 'package:letter_boxed_engine/letter_boxed_engine.dart';
+import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('should generate a playable game in less than 1000ms', skip: true,
-      () async {
-    final gameGen = GenerateGame();
+  test('should generate 10 playable games', () async {
+    final dict = await loadDictionary(GameLanguage.pt);
+    final gameGen = BoxGenerator(dictionary: dict);
 
-    final game = await gameGen(GameLanguage.pt);
+    for (var i = 0; i < 10; i++) {
+      final box = gameGen.generate();
 
-    expect(game, isNotNull, reason: 'didn\'t generate a valid game');
+      final solver = SolveGameBox(box, dict);
+
+      final solutions = solver.solve();
+
+      expect(solutions, isNotEmpty);
+      print('generated a game with ${solutions.length} solutions: $box');
+    }
   });
 }

@@ -1,5 +1,4 @@
 import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
-import 'package:letter_boxed_engine/src/domain/entities/box.dart';
 import 'package:letter_boxed_engine/src/domain/usecases/filters.dart';
 import 'package:letter_boxed_engine/src/letter_boxed_engine_base.dart';
 import 'package:test/test.dart';
