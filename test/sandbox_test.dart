@@ -5,16 +5,12 @@ import 'package:test/test.dart';
 main() {
   test('sandbox', skip: true, () async {
     final dictionary = await loadDictionary(GameLanguage.pt);
+    final box = Box(fromString: 'rsa onm uie cbv');
 
-    final box = Box(fromString: 'faz nim rod uvl');
     final solver = SolveGameBox(box, dictionary);
 
-    final solutions = solver.solve();
+    final solution = solver.solve();
 
-    print('found ${solutions.length} solutions:');
-
-    for (var s in solutions) {
-      print(s);
-    }
+    print(solution);
   });
 }

@@ -55,7 +55,7 @@ class BoxGenerator {
           _fitsTempBox(w, futureBox);
     });
 
-    if (tempDict.isEmpty) return null;
+    if (tempDict.length < 2) return null;
 
     return tempDict.elementAt(Random().nextInt(tempDict.length - 1));
   }

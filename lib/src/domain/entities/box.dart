@@ -3,7 +3,7 @@
 class Box {
   Box({required String fromString}) {
     final s = fromString.replaceAll(' ', '');
-    _validate(s);
+    _validateBox(s);
 
     letterBox = [
       s.substring(0, 3),
@@ -12,7 +12,7 @@ class Box {
       s.substring(9, 12),
     ];
 
-    availableLetters = letterBox.join().split('').toSet().join();
+    availableLetters = (letterBox.join().split('')..sort()).toSet().join();
     unavailableLetters = 'abcdefghijklmnopqrstuvwxyz'
         .split('')
         .toSet()
@@ -27,10 +27,10 @@ class Box {
   /// `['abc','def','ghi','jkl']`
   late final List<String> letterBox;
 
-  /// The `12` unique `a-z` letters that are present the box (not in order).
+  /// The `12` unique `a-z` letters that are present the box (alphabetical order).
   late final String availableLetters;
 
-  /// The `14` unique `a-z` letters that **are not** present in the box (not in order).
+  /// The `14` unique `a-z` letters that **are not** present in the box (alphabetical order).
   late final String unavailableLetters;
 
   /// Returns a [Pattern] that matches any strings not allowed in [letterBox]. **Not case sensitive**
@@ -54,7 +54,7 @@ class Box {
   /// ```
   late final Pattern denied;
 
-  static void _validate(String box) {
+  static void _validateBox(String box) {
     if (box.isEmpty) throw Exception('"$box" is `empty`');
     if (box.toLowerCase().contains(RegExp(r'[^a-z]')))
       throw Exception('"$box" ([a-z] letters and spaces only)');
