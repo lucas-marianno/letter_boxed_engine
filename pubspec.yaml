@@ -6,9 +6,10 @@ repository: https://github.com/lucas-marianno/Encaixado
 environment:
   sdk: ^3.5.3
 
-# assets:
-  # - assets/
-  
+assets:
+  - assets/
+
+# Add regular dependencies here.
 dependencies:
 
 
