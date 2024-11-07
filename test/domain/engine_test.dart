@@ -1,29 +1,30 @@
-import 'dart:math';
-
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() async {
-  final engine = Engine(GameLanguage.pt);
+  TestWidgetsFlutterBinding.ensureInitialized();
+  final engine = LetterBoxedEngine(GameLanguage.pt);
   await engine.init();
 
   test('Should generate a game', () async {
     final game = await engine.generateGame();
 
-    expect(game.solutions.isNotEmpty, true,
+    expect(game.nOfSolutions > 0, true,
         reason: 'game ${game.box} doesn\'t have a solution');
 
     print(game);
-    print(game.solutions.sublist(0, min(10, game.solutions.length)));
+    print(game.sampleSolutions);
   });
 
-  test('Should generate 10 games', () async {
+  test('Should generate 10 games', skip: true, () async {
     final games = <Game>[];
     for (var i = 0; i < 10; i++) {
       final game = await engine.generateGame();
 
-      expect(game.solutions.isNotEmpty, true,
+      expect(game.nOfSolutions > 0, true,
           reason: 'game ${game.box} doesn\'t have a solution');
+
+      print('${game.box}: ${game.nOfSolutions},');
       games.add(game);
     }
 

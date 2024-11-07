@@ -1,5 +1,5 @@
 import 'package:letter_boxed_engine/src/domain/entities/box.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('should return available letters', () {

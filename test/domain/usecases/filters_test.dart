@@ -1,9 +1,10 @@
 import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
 import 'package:letter_boxed_engine/src/domain/usecases/filters.dart';
 import 'package:letter_boxed_engine/src/letter_boxed_engine_base.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   test('should remove all words that contain unavailable letters', () {
     final box = Box(fromString: 'abc def ghi jkl');
     final wordlist = <String>['a', 'd', 'g', 'j', 'm', 'z'];

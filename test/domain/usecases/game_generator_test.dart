@@ -1,8 +1,9 @@
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   test('should generate 10 playable games', () async {
     final dict = await loadDictionary(GameLanguage.pt);
     final gameGen = BoxGenerator(dictionary: dict);

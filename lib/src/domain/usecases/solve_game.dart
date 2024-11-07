@@ -18,7 +18,6 @@ class SolveGameBox {
 
   List<List<String>> solve({int withLength = 2}) {
     assert(withLength > 0 && withLength < 5);
-    print('looking for solutions...');
 
     final queue = <List<String>>[];
 

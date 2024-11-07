@@ -1,15 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
-
+import 'package:letter_boxed_engine/src/data/load_data_assets.dart';
 import 'package:letter_boxed_engine/src/domain/entities/game_language.dart';
 
 /// Loads and returns a dictionary containing only unique unique words sorted
 /// in order of most unique characters.
 Future<List<String>> loadDictionary(GameLanguage language) async {
-  final uri = 'lib/assets/${language.name}_valid_words_only.json';
+  // final path =
+  //     'packages/letter_boxed_engine/assets/${language.name}_valid_words_only.json';
+  // final s = await rootBundle.loadString(path);
 
-  final file = File(uri);
-  final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
+  // final data = jsonDecode(s) as Map<String, dynamic>;
+
+  final data = await loadDataAssets('${language.name}_valid_words_only.json');
   final dictionary = data.keys.toSet();
 
   return dictionary.toList()
@@ -20,7 +21,6 @@ Future<List<String>> loadDictionary(GameLanguage language) async {
       return bLen.compareTo(aLen);
     });
 }
-
 
 // void filterByLength(Set<String> wordlist, int minLength) {
 //   wordlist.retainWhere((word) => word.length >= minLength);
