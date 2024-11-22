@@ -3,6 +3,7 @@ import 'package:letter_boxed_engine/src/letter_boxed_engine_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final dictionary = await loadDictionary(GameLanguage.en);
   group('testing `LetterBoxSolver`', () {
     final box = Box(fromString: 'igh fym oea lpr');

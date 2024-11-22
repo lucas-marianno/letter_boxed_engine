@@ -3,9 +3,10 @@ import 'package:letter_boxed_engine/src/letter_boxed_engine_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
-  test('sandbox', skip: true, () async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  test('sandbox', skip: false, () async {
     final dictionary = await loadDictionary(GameLanguage.pt);
-    final box = Box(fromString: 'rsa onm uie cbv');
+    final box = Box(fromString: 'cnr ota iep mus');
 
     final solver = SolveGameBox(box, dictionary);
 

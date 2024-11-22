@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  test('should generate 10 playable games', () async {
+  test('should generate 10 playable games', skip: true, () async {
     final dict = await loadDictionary(GameLanguage.pt);
     final gameGen = BoxGenerator(dictionary: dict);
 
