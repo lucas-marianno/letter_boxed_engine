@@ -39,7 +39,7 @@ class Cli {
         }
       }
 
-      final solutions = await SolveGameBox(box!, dictionary).solve();
+      final solutions = SolveGameBox(box!, dictionary).solve();
       stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
       for (var s in solutions) {
         stdout.writeln(s);
