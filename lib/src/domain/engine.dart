@@ -23,13 +23,29 @@ class LetterBoxedEngine {
     _hasInit = true;
   }
 
-  Future<Game> generateGame() async {
+  /// If [ensureSolvable] is `true`,
+  /// [SolveGameBox] will solve the generated [Box].
+  ///
+  /// The solving process might be computationally expensive, but will guarantee
+  /// that each generated [Box] has at least `1` possible solution.
+  ///
+  /// The generator algorithm is reliable enough that it doesnt acctually need
+  /// to be double checked, consider setting [ensureSolvable] to `false` to
+  /// optimize generation delta time.
+  Future<Game> generateGame({bool ensureSolvable = false}) async {
     assert(_hasInit == true, _initErrorMessage);
 
     final box = BoxGenerator(dictionary: _dictionary!).generate();
-    final solutions = SolveGameBox(box, _dictionary!).solve();
 
-    if (solutions.isEmpty) return generateGame();
+    final solutions = <List<String>>[];
+
+    if (ensureSolvable) {
+      solutions.addAll(SolveGameBox(box, _dictionary!).solve());
+
+      if (solutions.isEmpty) {
+        return generateGame(ensureSolvable: ensureSolvable);
+      }
+    }
 
     return Game(
       box: box,

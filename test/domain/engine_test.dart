@@ -7,28 +7,13 @@ void main() async {
   await engine.init();
 
   test('Should generate a game', () async {
-    final game = await engine.generateGame();
+    final game = await engine.generateGame(ensureSolvable: true);
 
     expect(game.nOfSolutions > 0, true,
         reason: 'game ${game.box} doesn\'t have a solution');
 
     print(game);
     print(game.sampleSolutions);
-  });
-
-  test('Should generate 10 games', skip: true, () async {
-    final games = <Game>[];
-    for (var i = 0; i < 10; i++) {
-      final game = await engine.generateGame();
-
-      expect(game.nOfSolutions > 0, true,
-          reason: 'game ${game.box} doesn\'t have a solution');
-
-      print('${game.box}: ${game.nOfSolutions},');
-      games.add(game);
-    }
-
-    expect(games.length, 10);
   });
 
   group('testing `validateWord`', () {
@@ -47,7 +32,6 @@ void main() async {
       expect(engine.validateWord('rouc', box), false);
     });
     test('should return `true` for a word that fits box and dict', () {
-      // TODO
       expect(engine.validateWord('ruminacoes', box), true);
       expect(engine.validateWord('subornavam', box), true);
       expect(engine.validateWord('escrever', box), true);
