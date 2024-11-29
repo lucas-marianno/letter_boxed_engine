@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 import 'package:letter_boxed_engine/src/data/load_dictionary.dart';
 import 'package:letter_boxed_engine/src/data/load_games.dart';
@@ -12,14 +10,12 @@ const _initErrorMessage =
 ///
 /// Don't forget to add `WidgetsFlutterBinding.ensureInitialized();` to main.dart
 class LetterBoxedEngine {
-  final GameLanguage language;
-  List<String>? _dictionary;
-  bool _hasInit = false;
-
   LetterBoxedEngine(this.language);
+  final GameLanguage language;
 
   Future<void> init() async {
     _dictionary = await loadDictionary(language);
+    _games = await loadGames(language);
     _hasInit = true;
   }
 
@@ -55,11 +51,9 @@ class LetterBoxedEngine {
     );
   }
 
-  Future<Game> loadRandomGame() async {
-    final games = await loadGames(language);
-    final rnd = Random().nextInt(games.length - 1);
-
-    return games[rnd];
+  List<Game> getPreGeneratedGames() {
+    assert(_hasInit == true, _initErrorMessage);
+    return _games;
   }
 
   bool validateWord(String word, Box box) {
@@ -92,4 +86,14 @@ class LetterBoxedEngine {
 
     return true;
   }
+
+  List<List<String>> solveGame(Box box, {int withLength = 2}) {
+    assert(_hasInit == true, _initErrorMessage);
+
+    return SolveGameBox(box, _dictionary!).solve(withLength: withLength);
+  }
+
+  List<String>? _dictionary;
+  bool _hasInit = false;
+  List<Game> _games = [];
 }
