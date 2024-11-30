@@ -1,5 +1,4 @@
 import 'package:letter_boxed_engine/src/domain/entities/box.dart';
-import 'package:letter_boxed_engine/src/domain/usecases/filters.dart';
 import 'package:letter_boxed_engine/src/extensions/string_extension.dart';
 
 class SolveGameBox {
@@ -10,10 +9,7 @@ class SolveGameBox {
 
   SolveGameBox(this.box, List<String> dictionary, {this.maxSolutions = 10}) {
     _dictionary = [...dictionary];
-    final filter = Filter(wordlist: _dictionary, box: box);
-    filter.byBox();
-    filter.byAvailableLetters();
-    _wordlist = [..._dictionary];
+    _wordlist = _dictionary.where((w) => !w.contains(box.denied)).toList();
   }
 
   List<List<String>> solve({int withLength = 2}) {

@@ -40,7 +40,7 @@ void main() {
 
     final reason =
         'Found $nOfSolvable solvable games out of $nOfGames generated games. '
-        'Only ${percentage * 100}% reliability';
+        'Reliability: ${percentage * 100}%';
 
     expect(percentage >= 0.9, true, reason: reason);
     print(reason);
