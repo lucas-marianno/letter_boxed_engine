@@ -1,6 +1,6 @@
 name: letter_boxed_engine
 description: A game generator and solver 
-version: 0.1.1
+version: 0.1.2
 repository: https://github.com/lucas-marianno/Encaixado
 
 environment:
