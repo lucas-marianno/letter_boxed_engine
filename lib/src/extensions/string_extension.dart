@@ -4,6 +4,10 @@ extension StringExtension on String {
     return String.fromCharCode(runes.last);
   }
 
+  int get charCount {
+    return split('').toSet().length;
+  }
+
   String insert(int index, String string) {
     return (split('')..insert(index, string)).join();
   }

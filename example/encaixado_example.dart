@@ -9,9 +9,7 @@ void main() async {
 
   final solver = SolveGameBox(box, ptbr);
 
-  final solutions = solver.solve(withLength: 4);
+  final solution = solver.solve();
 
-  for (var solution in solutions) {
-    print(solution);
-  }
+  print(solution);
 }

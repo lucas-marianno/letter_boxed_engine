@@ -8,6 +8,8 @@ void main() {
   test('should load existing games', () async {
     final games = await loadGames(GameLanguage.pt);
 
+    expect(games.isNotEmpty, true);
+
     print(games);
   });
 }

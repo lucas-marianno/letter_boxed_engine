@@ -4,7 +4,6 @@ import 'package:letter_boxed_engine/src/domain/entities/game_language.dart';
 
 /// Loads and returns a dictionary containing only unique unique words sorted
 /// in order of most unique characters.
-
 Future<List<String>> loadDictionary(GameLanguage language) async {
   final rawData =
       await loadDataAssets('${language.name}_valid_words_only.json');

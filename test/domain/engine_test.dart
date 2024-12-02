@@ -5,15 +5,15 @@ void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   final engine = LetterBoxedEngine(GameLanguage.pt);
   await engine.init();
+  group('testing `generateGame`', () {
+    test('Should generate a game', () async {
+      final game = await engine.generateGame();
 
-  test('Should generate a game', () async {
-    final game = await engine.generateGame(ensureSolvable: true);
+      expect(game.solution.isNotEmpty, true,
+          reason: 'game ${game.box} doesn\'t have a solution');
 
-    expect(game.nOfSolutions > 0, true,
-        reason: 'game ${game.box} doesn\'t have a solution');
-
-    print(game);
-    print(game.sampleSolutions);
+      print(game);
+    });
   });
 
   group('testing `validateWord`', () {

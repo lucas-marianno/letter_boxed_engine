@@ -15,27 +15,28 @@ void main() {
 
     final box = gameGen.generate();
 
-    final solutions = SolveGameBox(box, dict).solve();
+    final solution = SolveGameBox(box, dict).solve(1, 10);
 
-    expect(solutions, isNotEmpty);
-    print('generated a game with ${solutions.length} solutions: $box');
+    expect(solution, isNotNull);
+    expect(solution, isNotEmpty);
+    print('"$box": $solution,');
   });
   test('should generate playable games at least 90% of the times',
       skip: 'this is a time expensive test', () async {
     final gameGen = BoxGenerator(dictionary: dict);
 
-    Map<Box, int> games = {};
+    Map<Box, int?> games = {};
     for (var i = 0; i < 10; i++) {
       final box = gameGen.generate();
 
       final solver = SolveGameBox(box, dict);
 
-      final solutions = solver.solve();
+      final solution = solver.solve();
 
-      games.addAll({box: solutions.length});
+      games.addAll({box: solution?.length});
     }
     final nOfGames = games.entries.length;
-    final nOfSolvable = games.values.where((v) => v > 0).length;
+    final nOfSolvable = games.values.where((v) => v != null).length;
     final percentage = nOfSolvable / nOfGames;
 
     final reason =

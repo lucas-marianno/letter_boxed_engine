@@ -1,6 +1,6 @@
 name: letter_boxed_engine
 description: A game generator and solver 
-version: 0.1.2
+version: 0.2.0
 repository: https://github.com/lucas-marianno/Encaixado
 
 environment:
@@ -16,7 +16,6 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
-
   assets:
     - assets/pt_valid_words_only.json
     - assets/en_valid_words_only.json

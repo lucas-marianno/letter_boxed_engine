@@ -3,91 +3,59 @@ import 'package:letter_boxed_engine/src/extensions/string_extension.dart';
 
 class SolveGameBox {
   final Box box;
-  late final List<String> _dictionary;
-  final int maxSolutions;
-  late final List<String> _wordlist;
+  late final List<String> _dict;
 
-  SolveGameBox(this.box, List<String> dictionary, {this.maxSolutions = 10}) {
-    _dictionary = [...dictionary];
-    _wordlist = _dictionary.where((w) => !w.contains(box.denied)).toList();
+  SolveGameBox(this.box, List<String> dictionary) {
+    _dict = dictionary.where((w) => !w.contains(box.denied)).toList();
   }
 
-  List<List<String>> solve({int withLength = 2}) {
-    assert(withLength > 0 && withLength < 5);
+  List<String>? solve([int minLength = 1, int maxLength = 5]) {
+    assert(minLength < maxLength);
 
-    final queue = <List<String>>[];
+    final sw = Stopwatch()..start();
 
-    _populateWithSingleWords(queue);
+    final queue = _dict.map((w) => [w]).toList();
 
-    if (withLength <= 1 || _wordlist.isEmpty) return queue;
+    while (queue.isNotEmpty &&
+        queue.first.length <= maxLength &&
+        sw.elapsed.inSeconds < 2) {
+      final current = queue.first;
 
-    _populateWith2words(queue);
-
-    if (withLength <= 2 || _wordlist.isEmpty) return queue;
-
-    _populateWith3words(queue);
-
-    // highly demanding 4 word sequence
-    if (withLength <= 3 || _wordlist.isEmpty) return queue;
-
-    _populateWith4words(queue);
-
-    return queue;
-  }
-
-  void _populateWithSingleWords(List<List<String>> queue) {
-    queue.addAll([
-      for (var s in _wordlist) [s]
-    ]);
-    _filterSolutionsAndRemoveFromWordList(queue);
-  }
-
-  void _populateWith2words(List<List<String>> queue) {
-    queue.addAll([
-      for (String w1 in _wordlist)
-        for (String w2 in _wordlist
-            .where((w) => w.startsWith(w1.lastChar) && _isSolution([w1, w])))
-          [w1, w2]
-    ]);
-    _filterSolutionsAndRemoveFromWordList(queue);
-  }
-
-  void _populateWith3words(List<List<String>> queue) {
-    queue.addAll([
-      for (String w1 in _wordlist)
-        for (String w2 in _wordlist.where((w) => w.startsWith(w1.lastChar)))
-          for (String w3 in _wordlist.where(
-              (w) => w.startsWith(w2.lastChar) && _isSolution([w1, w2, w])))
-            [w1, w2, w3]
-    ]);
-    _filterSolutionsAndRemoveFromWordList(queue);
-  }
-
-  void _populateWith4words(List<List<String>> queue) {
-    queue.addAll([
-      for (String w1 in _wordlist)
-        for (String w2 in _wordlist.where((w) => w.startsWith(w1.lastChar)))
-          for (String w3 in _wordlist.where((w) => w.startsWith(w2.lastChar)))
-            for (String w4 in _wordlist.where((w) =>
-                w.startsWith(w3.lastChar) && _isSolution([w1, w2, w3, w])))
-              [w1, w2, w3, w4]
-    ]);
-    _filterSolutionsAndRemoveFromWordList(queue);
-  }
-
-  bool _isSolution(List<String> w) => w.join().split('').toSet().length > 11;
-
-  void _filterSolutionsAndRemoveFromWordList(List<List<String>> queue) {
-    queue.retainWhere((s) {
-      final strSolution = s.join().split('').toSet();
-      if (strSolution.length > 11) {
-        for (String word in s) {
-          _wordlist.remove(word);
+      if (current.join().charCount == 12) {
+        if (current.length >= minLength) {
+          return current;
         }
+        queue.removeAt(0);
+      } else {
+        _dict.where((w) => _shouldAddWord(current, w)).forEach((w) {
+          queue.add(current + [w]);
+        });
 
-        return true;
+        queue.removeAt(0);
+
+        // sorts the queue by most unique letters first
+        queue.sort((a, b) {
+          int aCount = a.join().charCount;
+          int bCount = b.join().charCount;
+          return bCount.compareTo(aCount);
+        });
       }
-      return false;
-    });
+    }
+
+    return null;
+  }
+
+  bool _shouldAddWord(List<String> current, String nextWord) {
+    if (!nextWord.startsWith(current.last.lastChar)) return false;
+    // if (current.contains(nextWord)) return false;
+
+    final nextSolution = current + [nextWord];
+    final currentCount = current.join().charCount;
+    final nextCount = nextSolution.join().charCount;
+
+    if (nextCount <= currentCount) return false;
+    if (nextCount > 12) return false;
+
+    return true;
   }
 }

@@ -28,26 +28,21 @@ class LetterBoxedEngine {
   /// The generator algorithm is reliable enough that it doesnt acctually need
   /// to be double checked, consider setting [ensureSolvable] to `false` to
   /// optimize generation delta time.
-  Future<Game> generateGame({bool ensureSolvable = false}) async {
+  Future<Game> generateGame() async {
     assert(_hasInit == true, _initErrorMessage);
 
     final box = BoxGenerator(dictionary: _dictionary!).generate();
+    final solution = SolveGameBox(box, _dictionary!).solve(1, 10);
 
-    final solutions = <List<String>>[];
-
-    if (ensureSolvable) {
-      solutions.addAll(SolveGameBox(box, _dictionary!).solve());
-
-      if (solutions.isEmpty) {
-        return generateGame(ensureSolvable: ensureSolvable);
-      }
+    if (solution == null) {
+      print('unsolvable box, generating again');
+      return generateGame();
     }
 
     return Game(
       box: box,
       language: language,
-      nOfSolutions: solutions.length,
-      solutions: solutions,
+      solution: solution,
     );
   }
 
@@ -87,10 +82,10 @@ class LetterBoxedEngine {
     return true;
   }
 
-  List<List<String>> solveGame(Box box, {int withLength = 2}) {
+  List<String>? solveGame(Box box, {int withLength = 2}) {
     assert(_hasInit == true, _initErrorMessage);
 
-    return SolveGameBox(box, _dictionary!).solve(withLength: withLength);
+    return SolveGameBox(box, _dictionary!).solve(1, withLength);
   }
 
   List<String>? _dictionary;

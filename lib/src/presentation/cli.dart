@@ -39,11 +39,9 @@ class Cli {
         }
       }
 
-      final solutions = SolveGameBox(box!, dictionary).solve();
-      stdout.writeln('\nFound ${solutions.length} solutions  "$box"');
-      for (var s in solutions) {
-        stdout.writeln(s);
-      }
+      final solution = SolveGameBox(box!, dictionary).solve();
+      stdout.writeln('\nFound ${solution?.length} solutions  "$box"');
+      stdout.writeln(solution);
       box = null;
       stdout.writeln(
           '\n(write a new `letter box` to find solutions | `q` to quit)\n');

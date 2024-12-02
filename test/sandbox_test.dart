@@ -19,10 +19,10 @@ main() {
     final engine = LetterBoxedEngine(GameLanguage.pt);
     await engine.init();
 
-    for (var i = 0; i < 100; i++) {
-      final game = await engine.generateGame(ensureSolvable: false);
+    for (var i = 0; i < 300; i++) {
+      final game = await engine.generateGame();
 
-      print('"${game.box}": ${game.nOfSolutions},');
+      print('"${game.box}": ${game.solution.map((s) => '"$s"').toList()},');
     }
   });
 }
