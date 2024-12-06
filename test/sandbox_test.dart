@@ -16,11 +16,11 @@ main() {
   });
 
   test('Generate Games', skip: true, () async {
-    final engine = LetterBoxedEngine(GameLanguage.pt);
+    final engine = LetterBoxedEngine(GameLanguage.en);
     await engine.init();
 
-    for (var i = 0; i < 300; i++) {
-      final game = await engine.generateGame();
+    for (var i = 0; i < 100; i++) {
+      final game = await engine.generateGame(msTimeout: 1000);
 
       print('"${game.box}": ${game.solution.map((s) => '"$s"').toList()},');
     }

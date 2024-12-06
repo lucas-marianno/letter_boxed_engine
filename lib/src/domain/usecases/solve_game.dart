@@ -9,7 +9,11 @@ class SolveGameBox {
     _dict = dictionary.where((w) => !w.contains(box.denied)).toList();
   }
 
-  List<String>? solve([int minLength = 1, int maxLength = 5]) {
+  List<String>? solve([
+    int minLength = 1,
+    int maxLength = 10,
+    int msTimeout = 1000,
+  ]) {
     assert(minLength < maxLength);
 
     final sw = Stopwatch()..start();
@@ -18,7 +22,7 @@ class SolveGameBox {
 
     while (queue.isNotEmpty &&
         queue.first.length <= maxLength &&
-        sw.elapsed.inSeconds < 2) {
+        sw.elapsed.inMilliseconds < msTimeout) {
       final current = queue.first;
 
       if (current.join().charCount == 12) {
